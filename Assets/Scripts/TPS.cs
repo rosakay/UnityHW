@@ -35,12 +35,12 @@ public class TPS : MonoBehaviour
         float fMoveStrength = vForward.magnitude*mMoveSpeed;
         if (fMoveStrength > 0)
         {
-             transform.forward = Vector3.RotateTowards(transform.forward, vForward, 0.1f, 0.1f);
+            transform.forward = Vector3.RotateTowards(transform.forward, vForward, 0.1f, 0.1f);
             transform.position = transform.position + transform.forward * fMoveStrength * Time.deltaTime ;
         }
 
-        float fMX = Input.GetAxis("Mouse X");
-        float fMY = - Input.GetAxis("Mouse Y");
+        float fMX = Input.GetAxis("Mouse X") * 3.5f;
+        float fMY = - Input.GetAxis("Mouse Y") * 3.5f;
 
         // horizontal rotate
         mHorizontalVector = Quaternion.AngleAxis(fMX, Vector3.up)*mHorizontalVector;
@@ -49,7 +49,9 @@ public class TPS : MonoBehaviour
         // vertical rotate
         Vector3 vTempR = Vector3.Cross(Vector3.up, mHorizontalVector);
         mTotalRotateVertical += fMY;
-        Debug.Log(mTotalRotateVertical);
+
+        //Debug.Log("mTotalRotateVertical: "+ mTotalRotateVertical );
+
         if (mTotalRotateVertical > mLookDownLimit)
         {
             mTotalRotateVertical = mLookDownLimit;
@@ -65,8 +67,8 @@ public class TPS : MonoBehaviour
       //  Vector3 vFrameVector = transform.position - mTPSCamera.transform.position;
         //float fFrameDistance = vFrameVector.magnitude;
        // Debug.Log("fFrameDistance " + fFrameDistance + ":" + mCurrentLookDistance);
-     //   float fDistance = Mathf.Lerp(fFrameDistance, mCurrentLookDistance, 0.2f);
-     //   Debug.Log("fDistance " + fDistance);
+        //   float fDistance = Mathf.Lerp(fFrameDistance, mCurrentLookDistance, 0.2f);
+        //   Debug.Log("fDistance " + fDistance);
         Vector3 vCamMoveTarget = mLookPt.position - vRotateVector * mCurrentLookDistance;
         RaycastHit rh;
         if(Physics.SphereCast(mLookPt.position, 0.2f, -vRotateVector, out rh, mCurrentLookDistance, mLayers))
@@ -74,10 +76,10 @@ public class TPS : MonoBehaviour
             vCamMoveTarget = mLookPt.position - vRotateVector * rh.distance;
         }
 
-       mTPSCamera.transform.position = vCamMoveTarget;//Vector3.Lerp(mTPSCamera.transform.position, vCamMoveTarget, 0.1f);
+        mTPSCamera.transform.position = vCamMoveTarget;//Vector3.Lerp(mTPSCamera.transform.position, vCamMoveTarget, 0.1f);
         //mTPSCamera.transform.position = Vector3.SmoothDamp(mTPSCamera.transform.position, vCamMoveTarget, ref mSmoothVel, 0.05f) ;
         //Vector3.Lerp(mTPSCamera.transform.position, vCamMoveTarget, 0.1f);
-        Debug.Log("VVV" + mTPSCamera.transform.position);
+        //Debug.Log("mTPSCamera.transform.position: " + mTPSCamera.transform.position);
         mTPSCamera.transform.forward = mLookPt.position - mTPSCamera.transform.position;
     }
 }
